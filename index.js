@@ -14,8 +14,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Serve static files from the "public" folder
-// app.use(express.static(path.join(__dirname, "public")));
-// app.use(express.static(__dirname + '/public'));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 app.get('/', (req, res) => {
@@ -61,3 +59,17 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
 });
+
+//app.js
+
+const express = require("express");
+const serverless = require("serverless-http");
+const app = express();
+const router = express.Router();
+
+router.get("/", (req, res) => {
+    res.send("App is running..");
+});
+
+app.use("/.netlify/functions/app", router);
+module.exports.handler = serverless(app);
